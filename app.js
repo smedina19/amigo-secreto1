@@ -1,5 +1,5 @@
 // El principal objetivo de este desafío es fortalecer tus habilidades en lógica de programación. Aquí deberás desarrollar la lógica para resolver el problema.
-let amigos = [];
+const amigos = [];
 
 function agregarAmigo() {
     const input = document.getElementById("amigo");
@@ -9,35 +9,36 @@ function agregarAmigo() {
         alert("Por favor, ingresa un nombre válido.");
         return;
     }
-  amigos.push(nombre.value);
-  mostrarAmigos();
-  document.getElementById("amigo").value = "";
-  nombre.focus();
-  console.log(nombre.value);
-};
-
-const mostrarAmigos = () => {
-  let amigosList = document.getElementById("listaAmigos");
-  amigosList.innerHTML = "";
-  amigos.forEach((amigo) => {
-    amigosList.innerHTML += `<li>${amigo}</li>`;
-  });
-};
-
-const sortearAmigo = () => {
-    if (amigos.length < 2) {
-        snackbar("Debe ingresar al menos dos amigos");
+    
+    if (amigos.includes(nombre)) {
+        alert("Este nombre ya ha sido agregado.");
         return;
     }
-  let amigoSorteado = amigos[Math.floor(Math.random() * amigos.length)];
-  document.getElementById("resultado").innerHTML = amigoSorteado;
-};
+    
+    amigos.push(nombre);
+    actualizarLista();
+    input.value = "";
+}
 
-const snackbar = (mensaje) => {
-  let snackbarElement = document.getElementById("snackbar");
-  snackbarElement.className = "show";
-  snackbarElement.innerHTML = mensaje;
-  setTimeout(function () {
-    snackbarElement.className = snackbarElement.className.replace("show", "");
-  }, 3000);
-};
+function actualizarLista() {
+    const lista = document.getElementById("listaAmigos");
+    lista.innerHTML = "";
+    amigos.forEach(amigo => {
+        const li = document.createElement("li");
+        li.textContent = amigo;
+        lista.appendChild(li);
+    });
+}
+
+function sortearAmigo() {
+    if (amigos.length === 0) {
+        alert("Agrega al menos un amigo antes de realizar el sorteo.");
+        return;
+    }
+    
+    const indiceAleatorio = Math.floor(Math.random() * amigos.length);
+    const amigoSecreto = amigos[indiceAleatorio];
+    
+    const resultado = document.getElementById("resultado");
+    resultado.innerHTML = `<li>🎉 Amigo Secreto: <strong>${amigoSecreto}</strong> 🎉</li>`;
+}
